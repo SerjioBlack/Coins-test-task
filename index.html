@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Search</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAKLtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERAAAAABERERERAAABEQAAABEQAAEQAREQARAAEQABEREAEQARAAEQEQARABEAARERABEAEQABERAAEQARAAEQEQARABEAARERABEAARABERABEAABEQAAABEQAAAREREREQAAAAAREREAAAAAAAAAAAAAD//wAA+B8AAOAHAADH4wAAzDMAAJwZAACcmQAAnBkAAJw5AACcmQAAnBkAAMwzAADH4wAA4AcAAPgfAAD//wAA" rel="icon" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <button id="searchBtn">🔍 Search</button>
+        <div id="searchMenu" class="hidden">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <div class="buttons">
+                <button id="favoritesBtn">★ Favorites</button>
+                <button id="allCoinsBtn">All coins</button>
+            </div>
+            <ul id="coinList"></ul>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

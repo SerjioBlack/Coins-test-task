@@ -1,0 +1,96 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 400px;
+    text-align: center;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#searchBtn {
+    background-color: #690ca7;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+#searchMenu {
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #333;
+    color: #fff;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.buttons button {
+    background-color: #690ca7;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 48%;
+    border-radius: 10px;
+}
+
+#coinList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#coinList::-webkit-scrollbar {
+    width: 10px;
+}
+
+#coinList::-webkit-scrollbar-thumb {
+    background: #690ca7;
+    border-radius: 4px;
+}
+
+#coinList::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+#coinList li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    justify-content: flex-start;
+}
+
+#coinList li .favorite {
+    cursor: pointer;
+    margin-right: 10px;
+}
