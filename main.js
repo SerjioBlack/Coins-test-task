@@ -1,86 +1,94 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const searchBtn = document.getElementById("searchBtn");
-    const searchMenu = document.getElementById("searchMenu");
-    const searchInput = document.getElementById("searchInput");
-    const coinList = document.getElementById("coinList");
-    const favoritesBtn = document.getElementById("favoritesBtn");
-    const allCoinsBtn = document.getElementById("allCoinsBtn");
-
-    let coins = [];
-    let favorites = getFavoritesFromCookies();
-
-    searchBtn.addEventListener("click", () => {
-        searchMenu.classList.toggle("hidden");
-    });
-
-    searchInput.addEventListener("input", () => {
-        const query = searchInput.value.toLowerCase();
-        displayCoins(coins.filter(coin => coin.toLowerCase().includes(query)));
-    });
-
-    favoritesBtn.addEventListener("click", () => {
-        displayCoins(favorites);
-    });
-
-    allCoinsBtn.addEventListener("click", () => {
-        displayCoins(coins);
-    });
-
-    const fetchCoins = async () => {
-        try {
-            const response = await fetch("https://api-eu.okotoki.com/coins");
-            const data = await response.json();
-            coins = data.filter(coin => coin); // фильтруем пустые строки
-            displayCoins(coins);
-        } catch (error) {
-            console.error("Error fetching coins:", error);
+    class CoinManager {
+        constructor() {
+            this.coins = [];
+            this.favorites = this.getFavoritesFromCookies();
+            this.searchBtn = document.getElementById("searchBtn");
+            this.searchMenu = document.getElementById("searchMenu");
+            this.searchInput = document.getElementById("searchInput");
+            this.coinList = document.getElementById("coinList");
+            this.favoritesBtn = document.getElementById("favoritesBtn");
+            this.allCoinsBtn = document.getElementById("allCoinsBtn");
+            
+            this.setupEventListeners();
+            this.fetchCoins();
         }
-    };
 
-    const displayCoins = (coinsToDisplay) => {
-        coinList.innerHTML = "";
-        coinsToDisplay.forEach(coin => {
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <span class="favorite">${favorites.includes(coin) ? "★" : "☆"}</span>
-                <span>${coin}</span>
-            `;
-            li.querySelector(".favorite").addEventListener("click", () => {
-                toggleFavorite(coin);
-                displayCoins(coinsToDisplay);
+        setupEventListeners() {
+            this.searchBtn.addEventListener("click", () => {
+                this.searchMenu.classList.toggle("hidden");
             });
-            coinList.appendChild(li);
-        });
-    };
 
-    const toggleFavorite = (coin) => {
-        if (favorites.includes(coin)) {
-            favorites = favorites.filter(fav => fav !== coin);
-        } else {
-            favorites.push(coin);
+            this.searchInput.addEventListener("input", () => {
+                const query = this.searchInput.value.toLowerCase();
+                this.displayCoins(this.coins.filter(coin => coin.toLowerCase().includes(query)));
+            });
+
+            this.favoritesBtn.addEventListener("click", () => {
+                this.displayCoins(this.favorites);
+            });
+
+            this.allCoinsBtn.addEventListener("click", () => {
+                this.displayCoins(this.coins);
+            });
         }
-        setFavoritesInCookies(favorites);
-    };
 
-    fetchCoins();
-
-    function getFavoritesFromCookies() {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; favorites=`);
-        if (parts.length === 2) {
+        async fetchCoins() {
             try {
-                return JSON.parse(parts.pop().split(';').shift());
-            } catch (e) {
-                return [];
+                const response = await fetch("https://api-eu.okotoki.com/coins");
+                const data = await response.json();
+                this.coins = data.filter(coin => coin); // фильтруем пустые строки
+                this.displayCoins(this.coins);
+            } catch (error) {
+                console.error("Error fetching coins:", error);
             }
         }
-        return [];
+
+        displayCoins(coinsToDisplay) {
+            this.coinList.innerHTML = "";
+            coinsToDisplay.forEach(coin => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <span class="favorite">${this.favorites.includes(coin) ? "★" : "☆"}</span>
+                    <span>${coin}</span>
+                `;
+                li.querySelector(".favorite").addEventListener("click", () => {
+                    this.toggleFavorite(coin);
+                    this.displayCoins(coinsToDisplay);
+                });
+                this.coinList.appendChild(li);
+            });
+        }
+
+        toggleFavorite(coin) {
+            if (this.favorites.includes(coin)) {
+                this.favorites = this.favorites.filter(fav => fav !== coin);
+            } else {
+                this.favorites.push(coin);
+            }
+            this.setFavoritesInCookies(this.favorites);
+        }
+
+        getFavoritesFromCookies() {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; favorites=`);
+            if (parts.length === 2) {
+                try {
+                    return JSON.parse(parts.pop().split(';').shift());
+                } catch (e) {
+                    return [];
+                }
+            }
+            return [];
+        }
+
+        setFavoritesInCookies(favorites) {
+            const d = new Date();
+            d.setTime(d.getTime() + (365*24*60*60*1000)); // 1 year
+            const expires = `expires=${d.toUTCString()}`;
+            document.cookie = `favorites=${JSON.stringify(favorites)}; ${expires}; path=/`;
+        }
     }
 
-    function setFavoritesInCookies(favorites) {
-        const d = new Date();
-        d.setTime(d.getTime() + (365*24*60*60*1000)); // 1 year
-        const expires = `expires=${d.toUTCString()}`;
-        document.cookie = `favorites=${JSON.stringify(favorites)}; ${expires}; path=/`;
-    }
+    new CoinManager();
 });
